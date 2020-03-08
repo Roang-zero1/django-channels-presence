@@ -6,7 +6,6 @@ from datetime import timedelta
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils.encoding  import python_2_unicode_compatible
 from django.utils.timezone import now
 
 from asgiref.sync import async_to_sync
@@ -25,7 +24,6 @@ class PresenceManager(models.Manager):
             room = presence.room
             room.remove_presence(presence=presence)
 
-@python_2_unicode_compatible
 class Presence(models.Model):
     room = models.ForeignKey('Room', on_delete=models.CASCADE)
     channel_name = models.CharField(max_length=255,
@@ -62,7 +60,6 @@ class RoomManager(models.Manager):
     def prune_rooms(self):
         Room.objects.filter(presence__isnull=True).delete()
 
-@python_2_unicode_compatible
 class Room(models.Model):
     channel_name = models.CharField(max_length=255, unique=True,
             help_text="Group channel name for this room")
